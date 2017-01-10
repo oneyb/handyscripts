@@ -1,0 +1,3 @@
+* handyscripts
+My repository for scripts that have stood the test of time and optimization.
+It contains scripts with lots of crap in them to do random things.
