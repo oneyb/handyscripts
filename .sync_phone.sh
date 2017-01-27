@@ -36,13 +36,13 @@ sleep 1
 
 if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     # Stuff to sync
-    stuff="org-emacs jobsearch config pubmaterials marriage training_tourenleiter"
+    stuff="org-emacs jobsearch config pubmaterials eaternity marriage training_tourenleiter"
     for s in $stuff; do
         rsync -vrulDO --size-only --delete $docs/$s/ $USB/$s/
     done
 
     # Home stuff
-    stuff="action books vipassana Breeding eaternity dropbox-insekten/Dropbox"
+    stuff="action books vipassana Breeding dropbox-insekten/Dropbox"
     for s in $stuff; do
         rsync -vrulDOL --size-only --delete ~/$s/ $USB/$s/
     done
@@ -61,13 +61,13 @@ if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     fi
 
 else
-    stuff="org-emacs jobsearch pubmaterials marriage training_tourenleiter"
+    stuff="org-emacs jobsearch pubmaterials marriage eaternity training_tourenleiter"
     for s in $stuff; do
         rsync -vurt --delete $USB/$s/ $docs/$s/
     done
 
     # Action, Books
-    stuff="action books vipassana Breeding eaternity dropbox-insekten/Dropbox"
+    stuff="action books vipassana Breeding dropbox-insekten/Dropbox"
     for s in $stuff; do
         rsync -vurt --delete $USB/$s/ ~/$s/
     done
