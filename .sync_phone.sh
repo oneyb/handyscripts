@@ -41,8 +41,8 @@ if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
         rsync -vrulDO --size-only --delete $docs/$s/ $USB/$s/
     done
 
-    # Action, Books
-    stuff="action books vipassana Breeding"
+    # Home stuff
+    stuff="action books vipassana Breeding eaternity dropbox-insekten/Dropbox"
     for s in $stuff; do
         rsync -vrulDOL --size-only --delete ~/$s/ $USB/$s/
     done
@@ -55,20 +55,19 @@ if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     fi
 
     # Pix
-    rsync -vrulDO --size-only --delete $USB1/DCIM/Camera/* $HOME/pictures/phone/
+    rsync -vrulDO --size-only --delete $USB/DCIM/Camera/* $HOME/pictures/phone/
     if [[ $phone -eq 1 ]]; then
         rsync -vrulDO --size-only $USB1/Contact* $HOME/documents/contacts/
     fi
 
 else
-
     stuff="org-emacs jobsearch pubmaterials marriage training_tourenleiter"
     for s in $stuff; do
         rsync -vurt --delete $USB/$s/ $docs/$s/
     done
 
     # Action, Books
-    stuff="action books vipassana Breeding"
+    stuff="action books vipassana Breeding eaternity dropbox-insekten/Dropbox"
     for s in $stuff; do
         rsync -vurt --delete $USB/$s/ ~/$s/
     done
@@ -78,8 +77,11 @@ fi
 # Pix
 rsync -vrulDO --size-only --delete $USB1/DCIM/Camera/* $HOME/pictures/phone/
 if [[ $phone -eq 1 ]]; then
-    rsync -vrulDO --size-only $USB1/Contact* $HOME/documents/contacts/
+    rsync -vrulDO --size-only $USB1/{C,K}o* $HOME/documents/contacts/
+    rsync -vrulDO --size-only $USB/{C,K}o* $HOME/documents/contacts/
 fi
+
+sleep 6
 
 adb forward --remove tcp:6010
 adb shell rm -f /sdcard/rsyncd.conf

@@ -1,0 +1,53 @@
+#!/usr/bin/env python
+
+#  A handy little program to batch rename pdf files.
+#
+#  Copyright (C) 2016  Brian J. Oney, brian.j.oney|at|gmail.com
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+import sys
+
+desc = """
+  A handy little program to patch together pdf files.
+        Usage:
+  Example of concatenating all PDFs in a directory:
+
+      pdf-concat *.pdf output.pdf
+
+"""
+
+if '-h' in sys.argv or '--help' in sys.argv or len(sys.argv) == 1 and __name__ == '__main__':
+    print desc
+    sys.exit(0)
+
+import os
+
+def system_string(args):
+    """
+    prepare string to evaluate
+    """
+    command = 'pdftk ' + ' '.join(args[:-1]) + ' cat output ' + args[-1]
+    return command
+
+
+# Run if wanted
+if __name__ == '__main__':
+    if '-v' in sys.argv:
+        command = system_string(sys.argv[2:])
+        print 'Sending the following string to the command line: \n\n\t' + \
+            command + '\n'
+        os.system(command)
+    else:
+        os.system(system_string(sys.argv[1:]))

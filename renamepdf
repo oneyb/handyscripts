@@ -1,0 +1,102 @@
+#!/usr/bin/env python
+
+#  A handy little program to batch rename pdf files.
+#
+#  Copyright (C) 2016  Brian J. Oney, brian.j.oney|at|gmail.com
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+import sys
+
+desc = """
+  A handy little program to batch rename pdf files.
+        Usage: renamepdf PDFs
+  Example of renaming all PDFs in a directory:
+
+      renamepdf *.pdf *.PDF
+
+  Also, please consider using Zotero and its Zotfile extension (http://zotfile.com/).
+"""
+
+if '-h' in sys.argv or '--help' in sys.argv or len(sys.argv) == 1 and __name__ == '__main__':
+    print desc
+    sys.exit(0)
+
+from pdfminer.pdfparser import PDFParser, PDFDocument
+import re
+import shutil
+
+def get_pdf(pdf):
+    """
+    Get data of pdf
+    """
+    fp = open(pdf, 'rb')
+    parser = PDFParser(fp)
+    doc = PDFDocument()
+    parser.set_document(doc)
+    doc.set_parser(parser)
+    doc.initialize()
+
+    return doc
+
+
+def get_toc(document):
+    """
+    Get Table of Contents, if available
+    """
+    toc = list()
+    for (level, title, dest, a, structelem) in document.get_outlines():
+        toc.append((level, title))
+
+    return toc
+
+
+def get_outline_name_pdf(pdf):
+    for (i, j) in get_toc(get_pdf(pdf)):
+        # print i, j
+        if re.match('[0-9]', j) is not None:
+            # if i == 1:
+            newname = j + '.pdf'
+            return newname
+
+
+def rename_pdf(filename):
+    """
+    Determine new name of and rename pdf if possible
+    """
+    doc = get_pdf(filename)
+    try:
+        name = doc.info[0]['Title']
+    except KeyError:
+        name = None
+    if re.match('[0-9]', name) is None:
+        title = name
+        name = get_outline_name_pdf(filename)
+        # print name
+        # sanitize
+        try:
+            name = re.sub('(^[0-9])\.', '0\\1.',
+                          re.sub('[^0-9a-zA-Z-_.]+', '_', name))
+        except TypeError:
+            print name
+    if name is not None:
+        # print 'From ' + filename + ' to ' + name
+        shutil.move(filename, name)
+    else:
+        print 'Failed to rename ' + filename
+
+# Run if wanted
+if __name__ == '__main__':
+    for filename in sys.argv[1:]:
+        rename_pdf(filename)
