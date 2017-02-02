@@ -5,33 +5,35 @@ cd ~
 # The bare essentials
 
 sudo apt-get install android-tools-adb android-tools-fastboot htop aspell       \
-      aspell-bg aspell-de aspell-en aspell-es audacity python-xdg automake      \
-      awesome awesome-extra build-essential calendar-google-provider calibre    \
-      chromium cmake cmake-data cryptsetup-bin cups curl dash evince            \
-      firefox-esr firmware-linux-free firmware-linux-nonfree flac               \
-      flashplugin-nonfree freecad gdal-bin genisoimage geoip-database gfortran  \
-      gimp git gnome-disk-utility gocr gocr-tk googleearth-package gparted      \
-      handbrake handbrake-cli imagemagick inkscape ipython ipython3 ispell      \
-      java-common lame laptop-detect mencoder mplayer2 nco ncview netcdf-bin    \
-      netcdf-doc ntfs-3g ntfs-config openssh-client openssh-server p7zip-full   \
-      pavucontrol pcmanfm pdftk proj-bin proj-data pulseaudio                   \
-      pulseaudio-module-x11 pulseaudio-utils pyflakes python python-cups        \
-      python-cupshelpers python-flake8 python-libxml2 python-matplotlib         \
-      python-numpy python-openpyxl python-openssl python-pandas                 \
-      python-jsonrpclib python-pyparsing python-scipy python-setuptools         \
-      python-simplejson python-unittest2 python3 qpdf qpdfview r-base           \
-      r-cran-xml2 r-cran-ncdf4 recordmydesktop ristretto rsync scrot seahorse   \
-      simple-scan smplayer subversion suckless-tools synaptic tor tor-arm       \
-      tor-geoipdb torsocks transmission-gtk trash-cli udevil                    \
-      unattended-upgrades unoconv vim-gtk wget epiphany-browser bleachbit       \
-      wodim wordnet xbindkeys xclip xdg-user-dirs xdg-utils xdotool xfburn      \
-      xpdf xsel xul-ext-firebug xul-ext-itsalltext xul-ext-monkeysphere         \
-      xul-ext-noscript libssl-dev libgdal-dev python-gdal                       \
-      libmariadb-client-lgpl-dev exfat-utils python-pdfminer pdfminer-data      \
-      libxft-dev libfreetype6-dev python-pip python-pip3
+      aspell-bg aspell-de aspell-en aspell-es audacity automake awesome         \
+      awesome-extra build-essential calendar-google-provider calibre chromium   \
+      cmake cmake-data cryptsetup-bin cups curl dash evince firefox-esr         \
+      firmware-linux-free firmware-linux-nonfree flac flashplugin-nonfree       \
+      freecad gdal-bin genisoimage geoip-database gfortran gimp git             \
+      gnome-disk-utility gocr gocr-tk googleearth-package gparted handbrake     \
+      handbrake-cli imagemagick inkscape ispell java-common lame laptop-detect  \
+      mencoder mplayer2 nco ncview netcdf-bin netcdf-doc ntfs-3g ntfs-config    \
+      openssh-client openssh-server p7zip-full pavucontrol pcmanfm pdftk        \
+      proj-bin proj-data pulseaudio pulseaudio-module-x11 pulseaudio-utils      \
+      qpdf qpdfview r-base r-cran-xml2 r-cran-ncdf4 recordmydesktop ristretto   \
+      rsync scrot seahorse simple-scan smplayer subversion suckless-tools       \
+      synaptic tor tor-arm tor-geoipdb torsocks transmission-gtk trash-cli      \
+      udevil unattended-upgrades unoconv vim-gtk wget epiphany-browser          \
+      bleachbit wodim wordnet xbindkeys xclip xdg-user-dirs xdg-utils xdotool   \
+      xfburn xpdf xsel xul-ext-firebug xul-ext-itsalltext xul-ext-monkeysphere  \
+      xul-ext-noscript libssl-dev libgdal-dev libmariadb-client-lgpl-dev        \
+      exfat-utils libxft-dev libfreetype6-dev
+
 
 # python packages
-sudo pip install pandas ggplot
+sudo apt-get install python-xdg ipython ipython3 pyflakes python python-cups  \
+      python-cupshelpers python-flake8 python-libxml2 python-matplotlib       \
+      python-numpy python-openpyxl python-openssl python-pandas               \
+      python-jsonrpclib python-pyparsing python-scipy python-setuptools       \
+      python-simplejson python-unittest2 python3 python-gdal python-pdfminer  \
+      pdfminer-data python-pip python-pip3 ipython-notebook ipython3-notebook
+
+# sudo pip install pandas ggplot
 sudo chmod 755 -R /usr/local/lib
 
 # Playonlinux!!
@@ -104,8 +106,6 @@ dpkg -i skype-`date +%F`.deb
 agi -f
 mv skype-`date +%F`.deb ~/bin/src/
 
-# Dropbox
-
 
 # For LaTeX
 if [ -d /media/oney/Vault/texlive/ ];
@@ -129,4 +129,4 @@ then
 fi
 
 # May change this
-sudo localectl set-x11-keymap us pc105 qwerty 'compose:102'
+echo "Wanna? sudo localectl set-x11-keymap us pc105 qwerty 'compose:102'"
