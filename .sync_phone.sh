@@ -49,17 +49,21 @@ if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
 
     # Musica!
     if [[ $phone -eq 1 ]]; then
-        rsync -vrulDO --size-only --delete /d/music/essence/ $USB/music/
+        rsync -vrulDO --size-only --delete ~/music/essence/ $USB/music/
     else
-        rsync -vrulDO --size-only --delete /d/music/faves/ $USB/music/faves/
+        rsync -vrulDO --size-only --delete ~/music/faves/ $USB/music/faves/
     fi
 
     # Pix
     rsync -vrulDO --size-only --delete $USB/DCIM/Camera/* $HOME/pictures/phone/
     if [[ $phone -eq 1 ]]; then
         rsync -vrulDO --size-only $USB1/Contact* $HOME/documents/contacts/
+        rsync -vrulDO --size-only $USB1/{C,K}o* $HOME/documents/contacts/
+        rsync -vrulDO --size-only $USB/{C,K}o* $HOME/documents/contacts/
     fi
 
+    # Scans
+    rsync -vrulDO --size-only $USB1/ClearScanner_PDF/* $HOME/documents/scans/
 else
     stuff="org-emacs jobsearch pubmaterials marriage eaternity training_tourenleiter"
     for s in $stuff; do
@@ -72,13 +76,6 @@ else
         rsync -vurt --delete $USB/$s/ ~/$s/
     done
 
-fi
-
-# Pix
-rsync -vrulDO --size-only --delete $USB1/DCIM/Camera/* $HOME/pictures/phone/
-if [[ $phone -eq 1 ]]; then
-    rsync -vrulDO --size-only $USB1/{C,K}o* $HOME/documents/contacts/
-    rsync -vrulDO --size-only $USB/{C,K}o* $HOME/documents/contacts/
 fi
 
 sleep 6

@@ -5,22 +5,26 @@ if [ "$PWD" == ~ ]; then
     echo "Don't do this in your home directory..."; exit;
 fi
 
-find . -type d -name '* *' | while read file; do
-    target=`echo "$file" | sed -r -e 's/\ {1,}/-/g' -e 's/-{1,}/-/g' -e 's/-\_-/_/g' -e 's/\:/\_/g'` ;
-    echo "Renaming '$file' to '$target'";
-    mv "$file" "$target";
-done;	
+find . -type d |
+    sed -r '/\.svn/d;/\.git/d;/README/d;/LICENSE/d;/.*[A-Z :].*/!d' |
+    while read file;
+    do
+        target=$(echo "$file" | sed -r -e 's/\ +/-/g;s/-+/-/g;s/-\_-/_/g;s/\:/\_/g') ;
+        # echo "Renaming '$file' to '$target'";
+        mv "$file" "$target";
+        target2=$(echo "$target" | sed -r -e 's/\ +/-/g;s/-+/-/g;s/-\_-/_/g');
+        # echo "Renaming '$target' to '$target2'";
+        mv "$target" "$target2";
+        target=$(echo "$target2" | sed -r -e 's/:/_/g');
+        # echo "Renaming '$target2' to '$target'";
+        mv "$target2" "$target";
+        target2=$(echo "$target" | sed -r -e 's/[A-Z]/\L&/g');
+        echo "Renaming '$file' to '$target2'";
+        mv "$target" "$target2";
+    done
 
-find . -name '* *' | while read file;
-do
-    target=`echo "$file" | sed -r -e 's/\ {1,}/-/g' -e 's/-{1,}/-/g' -e 's/-\_-/_/g'`;
-    echo "Renaming '$file' to '$target'";
-    mv "$file" "$target";
-done;
+echo now rename files
 
-find . -name '*:*' | while read file;
-do
-    target=`echo "$file" | sed -r -e 's/:/_/g'`;
-    echo "Renaming '$file' to '$target'";
-    mv "$file" "$target";
-done;
+find . -type f |
+    sed -r '/\.svn/d;/\.git/d;/README/d;/LICENSE/d;/.*[A-Z :].*/!d' |
+    rename -v 's/[A-Z]/\L$&/g;s/ +/-/g;s/:/_/;s/-_-/_/g;s/_-_/-/g'
