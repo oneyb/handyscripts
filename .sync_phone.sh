@@ -66,15 +66,16 @@ if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     rsync -vrulDO --size-only $USB1/ClearScanner_PDF/* $HOME/documents/scans/
 else
     stuff="org-emacs jobsearch pubmaterials marriage eaternity training_tourenleiter"
+    stuff="eaternity"
     for s in $stuff; do
         rsync -vurt --delete $USB/$s/ $docs/$s/
     done
 
-    # Action, Books
-    stuff="action books vipassana Breeding dropbox-insekten/Dropbox"
-    for s in $stuff; do
-        rsync -vurt --delete $USB/$s/ ~/$s/
-    done
+    # # Action, Books
+    # stuff="action books vipassana Breeding dropbox-insekten/Dropbox"
+    # for s in $stuff; do
+    #     rsync -vurt --delete $USB/$s/ ~/$s/
+    # done
 
 fi
 

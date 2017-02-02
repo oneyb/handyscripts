@@ -27,4 +27,4 @@ echo now rename files
 
 find . -type f |
     sed -r '/\.svn/d;/\.git/d;/README/d;/LICENSE/d;/.*[A-Z :].*/!d' |
-    rename -v 's/[A-Z]/\L$&/g;s/ +/-/g;s/:/_/;s/-_-/_/g;s/_-_/-/g'
+    rename -v 's/[A-Z]/\L$&/g;s/ +/-/g;s/:/_/;s/-_-/_/g;s/-+/-/g;s/_-_/-/g'
