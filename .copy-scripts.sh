@@ -14,7 +14,6 @@ stuff="
     $HOME/bin/.backup_file.sh
     $HOME/bin/.configure_linux.sh
     $HOME/bin/.convert_scans.sh
-    $HOME/bin/.lower-case.sh
     $HOME/bin/.switch-wifi.sh
     $HOME/bin/.sync_phone.sh
     $HOME/bin/.update_playlists.sh

@@ -30,7 +30,7 @@ desc = """
 """
 
 if '-h' in sys.argv or '--help' in sys.argv or len(sys.argv) == 1 and __name__ == '__main__':
-    print desc
+    print(desc)
     sys.exit(0)
 
 from pdfminer.pdfparser import PDFParser, PDFDocument
