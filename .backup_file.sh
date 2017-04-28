@@ -7,6 +7,7 @@ dest=/media/oney/Vault
 
 cd ~
 
+cp -au ~/bin/zoterobib2* ~/zotero/
 rsync -vurt --delete zotero/ /d/literature/zotero/
 
 if [ 2 -eq `date +%w` ]; then

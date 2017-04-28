@@ -17,7 +17,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-if [ $# -eq 0 ]; then
+if [ $# -lt 2 ]; then
     echo Usage: zoterobib2db.sh PATH-TO-BIBLIOGRAPHY-FILE.BIB DESTINATION-DIRECTORY/
     echo "Use standard values? (y/n)"
     read answer
@@ -36,7 +36,7 @@ else
     dbdir=$2
 fi
 
-cd `dirname $file`
+cd $(dirname $file)
 
 # sync
-rsync -vurt --delete `sed -r '/file = /!d;s/^.*:\/(.*):a.*$/\1/' $file` $dbdir/
+rsync -vurt --delete $(sed -r '/file = /!d;s/^.*:\/(.*):a.*$/\1/' $file) $dbdir/

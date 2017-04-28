@@ -10,7 +10,7 @@ then
     echo syncing phone
     phone=1
     USB=rsync://localhost:6010/root/storage/extSdCard
-    USB1=rsync://localhost:6010/root/storage/sdcard0
+    USB1=rsync://localhost:6010/root/sdcard
 else
     echo syncing tablet
     phone=0
@@ -57,8 +57,8 @@ if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     # Pix
     rsync -vrulDO --size-only --delete $USB/DCIM/Camera/* $HOME/pictures/phone/
     if [[ $phone -eq 1 ]]; then
-        rsync -vrulDO --size-only $USB1/Contact* $HOME/documents/contacts/
-        rsync -vrulDO --size-only $USB1/{C,K}o* $HOME/documents/contacts/
+        # rsync -vrulDO --size-only $USB1/Contact* $HOME/documents/contacts/
+        # rsync -vrulDO --size-only $USB1/{C,K}o* $HOME/documents/contacts/
         rsync -vrulDO --size-only $USB/{C,K}o* $HOME/documents/contacts/
     fi
 
