@@ -56,6 +56,7 @@ if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
 
     # Pix
     rsync -vrulDO --size-only --delete $USB/DCIM/Camera/* $HOME/pictures/phone/
+    rsync -vrulDO --size-only --delete "$USB1/WhatsApp/Media/WhatsApp Images/*jpg" $HOME/pictures/phone/
     if [[ $phone -eq 1 ]]; then
         # rsync -vrulDO --size-only $USB1/Contact* $HOME/documents/contacts/
         # rsync -vrulDO --size-only $USB1/{C,K}o* $HOME/documents/contacts/

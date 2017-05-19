@@ -12,7 +12,7 @@ stuff="
     $HOME/bin/rmspace
     $HOME/bin/zoterobib2db.sh
     $HOME/bin/.backup_file.sh
-    $HOME/bin/.configure_linux.sh
+    $HOME/bin/.setup_linux.sh
     $HOME/bin/.convert_scans.sh
     $HOME/bin/.switch-wifi.sh
     $HOME/bin/.sync_phone.sh
