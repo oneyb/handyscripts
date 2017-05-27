@@ -2,6 +2,7 @@
 dir=$HOME/documents/handyscripts
 
 stuff="
+    $HOME/bin/add_number.py
     $HOME/bin/add-pdf-page-numbers.sh
     $HOME/bin/aenea.sh
     $HOME/bin/cb
@@ -13,7 +14,6 @@ stuff="
     $HOME/bin/zoterobib2db.sh
     $HOME/bin/.backup_file.sh
     $HOME/bin/.setup_linux.sh
-    $HOME/bin/.convert_scans.sh
     $HOME/bin/.switch-wifi.sh
     $HOME/bin/.sync_phone.sh
     $HOME/bin/.update_playlists.sh
