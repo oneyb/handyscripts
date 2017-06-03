@@ -16,6 +16,7 @@ stuff="
     $HOME/bin/.setup_linux.sh
     $HOME/bin/.switch-wifi.sh
     $HOME/bin/.sync_phone.sh
+    $HOME/bin/sync_org.sh
     $HOME/bin/.update_playlists.sh
     $HOME/bin/.work-screen.sh
     $HOME/bin/.copy-scripts.sh

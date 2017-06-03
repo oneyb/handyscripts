@@ -65,25 +65,32 @@ sudo cp rclone.1 /usr/local/share/man/man1/
 sudo mandb
 
 pkgs=(
- https://github.com/jgm/pandoc/releases/download/1.19.1/pandoc-1.19.1-1-amd64.deb
- https://github.com/Aluxian/Whatsie/releases/download/v2.1.0/whatsie-2.1.0-linux-amd64.deb
- https://github.com/Aluxian/Messenger-for-Desktop/releases/download/v2.0.4/messengerfordesktop-2.0.4-linux-amd64.deb
+    https://github.com/jgm/pandoc/releases/download/1.19.2.1/pandoc-1.19.2.1-1-amd64.deb
+    https://github.com/Aluxian/Whatsie/releases/download/v2.1.0/whatsie-2.1.0-linux-amd64.deb
+    https://github.com/Aluxian/Messenger-for-Desktop/releases/download/v2.0.4/messengerfordesktop-2.0.4-linux-amd64.deb
 )
+
+function install_manual_deb ()
+{
+        wget $1
+        sudo dpkg -i `basename $1`
+        if [ $# -eq 0 ]; then
+            sudo apt-get install -f
+        fi
+        mv `basename $1` $HOME/bin/src/
+}
+
 for p in ${pkgs[0]}; do
-    wget $p
-    sudo dpkg -i `basename $p`
-    if [ $# -eq 0 ]; then
-        sudo apt-get install -f
-    fi
-    mv `basename $p` /home/oney/bin/src/
+    manual_install $p
 done
 
-wget https://updates.tdesktop.com/tlinux/tsetup.0.10.19.tar.xz
-mv tsetup.0.10.19.tar.xz /home/oney/bin/src/
-cd  /home/oney/bin/src/
-tar xJf tsetup.0.10.19.tar.xz
-mv Telegram/* ~/bin/src/
-rmdir Telegram
+# # Don't telegram anymore
+# wget https://updates.tdesktop.com/tlinux/tsetup.0.10.19.tar.xz
+# mv tsetup.0.10.19.tar.xz /home/oney/bin/src/
+# cd  /home/oney/bin/src/
+# tar xJf tsetup.0.10.19.tar.xz
+# mv Telegram/* ~/bin/src/
+# rmdir Telegram
 
 wget ftp://ftp.adobe.com/pub/adobe/reader/unix/9.x/9.5.5/enu/AdbeRdr9.5.5-1_i386linux_enu.deb
 sudo dpkg --add-architecture i386
@@ -99,6 +106,20 @@ wget https://www.archlinux.org/packages/community/any/arch-wiki-lite/download/ -
 sudo tar xJf arch-wiki-lite.tar.xz -C /
 mv arch-wiki* ~/bin/src/
 sudo rm /.BUILDINFO /.MTREE /.PKGINFO
+
+# PDF-tools awesomeness
+sudo aptitude install libpng-dev libz-dev libpoppler-glib-dev  \
+     libpoppler-private-dev
+git clone https://github.com/politza/pdf-tools
+cd pdf-tools
+# make install-server-deps # optional
+make -s
+if [ -f pdf-tools-*.tar ]; then
+   sudo make install-package
+fi
+make clean
+cd ..
+mv pdf-tools ~/bin/src/
 
 # skype
 wget https://www.skype.com/de/download-skype/skype-for-linux/downloading/?type=debian32 -O skype-`date +%F`.deb
