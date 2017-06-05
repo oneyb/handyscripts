@@ -107,19 +107,22 @@ sudo tar xJf arch-wiki-lite.tar.xz -C /
 mv arch-wiki* ~/bin/src/
 sudo rm /.BUILDINFO /.MTREE /.PKGINFO
 
-# PDF-tools awesomeness
-sudo aptitude install libpng-dev libz-dev libpoppler-glib-dev  \
-     libpoppler-private-dev
-git clone https://github.com/politza/pdf-tools
-cd pdf-tools
-# make install-server-deps # optional
-make -s
-if [ -f pdf-tools-*.tar ]; then
-   sudo make install-package
-fi
-make clean
-cd ..
-mv pdf-tools ~/bin/src/
+# # PDF-tools awesomeness
+# sudo aptitude install libpng-dev libz-dev libpoppler-glib-dev  \
+#      libpoppler-private-dev
+# git clone https://github.com/politza/pdf-tools
+# cd pdf-tools
+# # make install-server-deps # optional
+# make -s
+# if [ -f pdf-tools-*.tar ]; then
+#    sudo make install-package
+# fi
+# make clean
+# cd ..
+# mv pdf-tools ~/bin/src/
+echo "much easier to install pdf-tools layer and then:"
+emacsclient -e "(pdf-tools-install)"
+
 
 # skype
 wget https://www.skype.com/de/download-skype/skype-for-linux/downloading/?type=debian32 -O skype-`date +%F`.deb
