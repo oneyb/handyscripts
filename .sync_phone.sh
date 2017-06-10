@@ -36,7 +36,7 @@ sleep 1
 
 if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     # Stuff to sync
-    stuff="jobsearch config pubmaterials marriage eaternity training_tourenleiter"
+    stuff="jobsearch config pubmaterials marriage training_tourenleiter"
     for s in $stuff; do
         rsync -vrulDO --size-only --exclude '*bw2-py*' --delete $docs/$s/ $USB/$s/
     done
@@ -66,17 +66,18 @@ if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     # Scans
     rsync -vrulDO --size-only $USB1/ClearScanner_PDF/* $HOME/documents/scans/
 else
-    stuff="org-emacs jobsearch pubmaterials marriage eaternity training_tourenleiter"
-    stuff="eaternity"
+    # stuff="eaternity"
+    stuff="jobsearch pubmaterials marriage training_tourenleiter"
     for s in $stuff; do
         rsync -vurt --delete $USB/$s/ $docs/$s/
     done
 
     # # Action, Books
     # stuff="action books vipassana Breeding dropbox-insekten/Dropbox"
-    # for s in $stuff; do
-    #     rsync -vurt --delete $USB/$s/ ~/$s/
-    # done
+    stuff="action books Breeding dropbox-insekten/Dropbox sia-thesis sia-manuscript org"
+    for s in $stuff; do
+        rsync -vurt --delete $USB/$s/ ~/$s/
+    done
 
 fi
 

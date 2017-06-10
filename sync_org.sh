@@ -10,7 +10,7 @@ if [ -z $(pgrep -f "dropbox-dist") ]; then
     dropbox start
 fi
 
-sleep 16
+sleep 66
 
 conflicts=$(ls $HOME/org/*conflicted*)
 if [[ -n "$conflicts" ]]; then
@@ -20,8 +20,10 @@ if [[ -n "$conflicts" ]]; then
         # echo "$con"
         filenamebase=$(basename "$con" | sed -r 's/^([A-Za-z]+) .*$/\1.org/')
         # emacsclient -c -e "(ediff-files '(file-expand-wildcards \"~/org/$filenamebase*.org\"))"
-        emacsclient -c -e "(ediff-files \"~/org/$filenamebase\" \"$con\"))"
+        emacsclient -c -e "(ediff-files \"~/org/$filenamebase\" \"$con\"))" -e "(toggle-frame-maximized)"
+        rm "~/org/$filenamebase *"
     done
+    bash -c 'sleep 20; killall -w dropbox' &
 else
     killall -w dropbox
 fi
