@@ -37,14 +37,14 @@ sudo apt-get install python-xdg ipython ipython3 pyflakes python python-cups  \
 sudo chmod 755 -R /usr/local/lib
 
 # Playonlinux!!
-wget -q "http://deb.playonlinux.com/public.gpg" -O- | sudo apt-key add -
-sudo wget http://deb.playonlinux.com/playonlinux_wheezy.list -O /etc/apt/sources.list.d/playonlinux.list
-sudo apt-get update
-sudo apt-get install playonlinux
+# wget -q "http://deb.playonlinux.com/public.gpg" -O- | sudo apt-key add -
+# sudo wget http://deb.playonlinux.com/playonlinux_wheezy.list -O /etc/apt/sources.list.d/playonlinux.list
+# sudo apt-get update
+# sudo apt-get install playonlinux
 
 ## Set default programs
 sudo update-alternatives --config x-www-browser
-sudo update-alternatives --config gnome-www-browser
+# sudo update-alternatives --config gnome-www-browser
 sudo update-alternatives --config editor
 # setxkbmap -option "compose:caps"
 
@@ -66,8 +66,6 @@ sudo mandb
 
 pkgs=(
     https://github.com/jgm/pandoc/releases/download/1.19.2.1/pandoc-1.19.2.1-1-amd64.deb
-    https://github.com/Aluxian/Whatsie/releases/download/v2.1.0/whatsie-2.1.0-linux-amd64.deb
-    https://github.com/Aluxian/Messenger-for-Desktop/releases/download/v2.0.4/messengerfordesktop-2.0.4-linux-amd64.deb
 )
 
 function install_manual_deb ()
@@ -80,9 +78,18 @@ function install_manual_deb ()
         mv `basename $1` $HOME/bin/src/
 }
 
-for p in ${pkgs[0]}; do
-    manual_install $p
+for p in ${pkgs[@]}; do
+    install_manual_deb $p
 done
+
+# Messenger services with Franz
+wget https://github.com/meetfranz/franz-app/releases/download/4.0.4/Franz-linux-x64-4.0.4.tgz
+sudo mkdir /opt/franz
+sudo tar xzf Franz-linux*.tgz -C /opt/franz
+sudo ln -s /opt/franz/Franz /usr/bin/franz
+sudo wget https://cdn-images-1.medium.com/max/360/1*v86tTomtFZIdqzMNpvwIZw.png -O /usr/share/icons/franz.png
+sudo bash -c "echo -e \"[Desktop Entry]\nEncoding=UTF-8\nName=Franz\nComment=A free messaging app for WhatsApp, Facebook Messenger, Telegram, Slack and more.\nExec=franz -- %u\nStartupWMClass=Franz\nIcon=franz\nTerminal=false\nType=Application\nCategories=Network;\" > /usr/share/applications/franz.desktop"
+mv Franz-linux*.tgz $HOME/bin/src/
 
 # # Don't telegram anymore
 # wget https://updates.tdesktop.com/tlinux/tsetup.0.10.19.tar.xz
@@ -123,18 +130,22 @@ sudo rm /.BUILDINFO /.MTREE /.PKGINFO
 echo "much easier to install pdf-tools layer and then:"
 emacsclient -e "(pdf-tools-install)"
 
+# Nice grub screen hiding
+wget https://raw.githubusercontent.com/hobarrera/grub-holdshift/master/31_hold_shift -O /etc/grub.d/31_hold_shift
+sudo bash -c 'echo -e "GRUB_TIMEOUT=\"0\"\nGRUB_HIDDEN_TIMEOUT=\"0\"\nGRUB_FORCE_HIDDEN_MENU=\"true\"" >> /etc/default/grub'
+grub-mkconfig -o /boot/grub/grub.cfg
 
-# skype
-wget https://www.skype.com/de/download-skype/skype-for-linux/downloading/?type=debian32 -O skype-`date +%F`.deb
-dpkg -i skype-`date +%F`.deb
-agi -f
-mv skype-`date +%F`.deb ~/bin/src/
+# # skype
+# wget https://www.skype.com/de/download-skype/skype-for-linux/downloading/?type=debian32 -O skype-`date +%F`.deb
+# dpkg -i skype-`date +%F`.deb
+# agi -f/etc/defaults/grub
+# mv skype-`date +%F`.deb ~/bin/src/
 
 
 # For LaTeX
-if [ -d /media/oney/Vault/texlive/ ];
+if [ -d /media/oney/stuff/texlive/ ];
 then
-    sudo cp -r /media/oney/Vault/texlive/ /usr/local/src/
+    sudo cp -r /media/oney/stuff/texlive/ /usr/local/src/
 else
     wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
     tar xzf install-tl-unx.tar.gz
@@ -142,15 +153,9 @@ else
     TEXLIVE_INSTALL_PREFIX=$HOME/texlive/
     ./install-tl -portable
 fi
+echo -e "if [ -d /usr/local/src/texlive/ ]; then\n\tPATH=\"/usr/local/src/texlive/bin/$(uname -m)-$(uname -s | sed "s/.*/\L&/"):\$PATH\"\nfi"
 
-# Create the soft links
-if [ -d /usr/local/src/texlive/ ];
-then
-    pwd=$PWD
-    cd /usr/local/bin/
-    sudo ln -sf /usr/local/src/texlive/bin/x86_64-linux/* .
-    cd $pwd
-fi
 
 # May change this
 echo "Wanna? sudo localectl set-x11-keymap us pc105 qwerty 'compose:102'"
+echo "Wanna? sudo localectl set-x11-keymap us pc105 qwerty 'compose:prsc,caps:escape'"

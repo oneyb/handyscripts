@@ -10,7 +10,7 @@ if [ -z $(pgrep -f "dropbox-dist") ]; then
     dropbox start
 fi
 
-sleep 66
+while [[ "Up to date" != "$(dropbox status)" ]]; do sleep 6; done
 
 conflicts=$(ls $HOME/org/*conflicted*)
 if [[ -n "$conflicts" ]]; then
