@@ -6,7 +6,7 @@ dir=/d
 
 if [ -d /media/oney/stuff/ ]; then
     dest=/media/oney/stuff
-elif [ -d /media/oney/OneyCryptex/ ]; then
+elif [ -d /media/oney/Vault/ ]; then
     dest=/media/oney/Vault
 fi
 

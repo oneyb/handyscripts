@@ -135,6 +135,14 @@ wget https://raw.githubusercontent.com/hobarrera/grub-holdshift/master/31_hold_s
 sudo bash -c 'echo -e "GRUB_TIMEOUT=\"0\"\nGRUB_HIDDEN_TIMEOUT=\"0\"\nGRUB_FORCE_HIDDEN_MENU=\"true\"" >> /etc/default/grub'
 grub-mkconfig -o /boot/grub/grub.cfg
 
+# emacs as service: from http://blog.refu.co/?p=1296
+mkdir -p ~/.config/systemd/user/
+echo -e  "[Unit]\n\nDescription=Emacs: the extensible, self-documenting text editor\n\n[Service]\n\nType=forking\nExecStart=/usr/bin/emacs --daemon\nExecStop=/usr/bin/emacsclient --eval \"(progn (save-buffers-kill-emacs))\"\nRestart=always\n# Remove the limit in startup timeout, since emacs\n# cloning and building all packages can take time\nTimeoutStartSec=0\n\n[Install]\n\nWantedBy=default.target" > ~/.config/systemd/user/emacs.service
+systemctl --user enable emacs
+bash -c 'systemctl --user start emacs'
+# systemctl --user stop emacs
+# systemctl --user disable emacs
+
 # # skype
 # wget https://www.skype.com/de/download-skype/skype-for-linux/downloading/?type=debian32 -O skype-`date +%F`.deb
 # dpkg -i skype-`date +%F`.deb

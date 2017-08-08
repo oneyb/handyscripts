@@ -42,7 +42,7 @@ if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     done
 
     # Home stuff
-    stuff="action books Breeding dropbox-insekten/Dropbox sia-thesis sia-manuscript org"
+    stuff="action books Breeding dropbox-insekten/Dropbox sia-thesis org zotero"
     for s in $stuff; do
         rsync -vrulDOL --size-only --delete ~/$s/ $USB/$s/
     done
@@ -74,7 +74,7 @@ else
 
     # # Action, Books
     # stuff="action books vipassana Breeding dropbox-insekten/Dropbox"
-    stuff="action books Breeding dropbox-insekten/Dropbox sia-thesis sia-manuscript org"
+    stuff="action books Breeding dropbox-insekten/Dropbox sia-thesis sia-manuscript org zotero"
     for s in $stuff; do
         rsync -vurt --delete $USB/$s/ ~/$s/
     done
