@@ -74,7 +74,7 @@ else
 
     # # Action, Books
     # stuff="action books vipassana Breeding dropbox-insekten/Dropbox"
-    stuff="action books Breeding dropbox-insekten/Dropbox sia-thesis sia-manuscript org zotero"
+    stuff="action books Breeding sia-thesis sia-manuscript org zotero"
     for s in $stuff; do
         rsync -vurt --delete $USB/$s/ ~/$s/
     done

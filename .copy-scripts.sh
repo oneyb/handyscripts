@@ -13,7 +13,6 @@ stuff="
     $HOME/bin/rmspace
     $HOME/bin/zoterobib2db.sh
     $HOME/bin/.backup_file.sh
-    $HOME/bin/.setup_linux.sh
     $HOME/bin/.switch-wifi.sh
     $HOME/bin/.sync_phone.sh
     $HOME/bin/sync_org.sh
@@ -30,7 +29,10 @@ if [[ $1 == "out" ]];then
 fi
 
 if [[ $1 == "in" ]];then
+	cd $dir
+	git pull
     for s in $stuff; do
-        cp $dir/`basename $s` `dirname $s`
+        cp `basename $s`  $s
     done
+    cd -
 fi
