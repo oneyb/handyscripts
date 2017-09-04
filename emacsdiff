@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# inspired by: https://defunitive.wordpress.com/2011/07/23/invoking-emacs-ediff-from-the-command-line/
+
+if [ -z $(pgrep -f emacsclient) ]; then
+    prog=emacs
+else
+    prog='emacsclient -c'
+fi
+
+# Diff stuff
+if [ $# -ne 2 ] || [ ! -f $1 ] || [ ! -f $2 ]; then
+		echo -e "\t usage: $(basename $0) <FILE1> <FILE2>"
+else
+		$prog --eval "(ediff-files \"$1\" \"$2\")"
+fi

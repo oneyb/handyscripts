@@ -8,6 +8,7 @@ stuff="
     $HOME/bin/cb
     $HOME/bin/drm_rm.sh
     $HOME/bin/eco
+    $HOME/bin/emacsdiff
     $HOME/bin/pdf-concat
     $HOME/bin/renamepdf
     $HOME/bin/rmspace
