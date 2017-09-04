@@ -6,7 +6,11 @@ dir=/d
 
 if [ -d /media/oney/stuff/ ]; then
     dest=/media/oney/stuff
+<<<<<<< HEAD
+elif [ -d /media/oney/OneyCryptex/ ]; then
+=======
 elif [ -d /media/oney/Vault/ ]; then
+>>>>>>> 38589e3c93c88ddad48ae42c10ea6ff2a1340329
     dest=/media/oney/Vault
 fi
 
