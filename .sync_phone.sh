@@ -18,11 +18,11 @@ else
     USB1=rsync://localhost:6010/root/storage/sdcard
 fi
 
-if [[ ! -f ~/bin/rsync.rsync4android ]]; then
-    wget -O ~/bin/rsync.rsync4android http://github.com/pts/rsyncbin/raw/master/rsync.rsync4android
+if [[ ! -f ~/phone/rsync.bin ]]; then
+    wget -O ~/phone/rsync.bin http://github.com/pts/rsyncbin/raw/master/rsync.rsync4android
 fi
 
-adb push ~/bin/rsync.rsync4android /data/local/tmp/rsync
+adb push ~/phone/rsync.bin /data/local/tmp/rsync
 adb shell chmod 755 /data/local/tmp/rsync
 
 adb shell 'exec >/sdcard/rsyncd.conf && echo address = 127.0.0.1 && echo port = 1873 && echo "[root]" && echo path = / && echo use chroot = false && echo read only = false'

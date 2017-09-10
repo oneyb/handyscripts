@@ -1,19 +1,12 @@
 #!/bin/bash
 
-# A handy script to merge my org-files when I forget to sync them in my
-# dropbox and have conflicted versions.
-
-# My workflow is to org things on my phone (orgzly) as well as on my computers
-# (spacemacs), and thus I goof things every once in a while. Git (and github)
-# would be smarter but then everyone could peer into my life :).
-
 if [[ -n "`pgrep -f 'emacs --daemon'`" ]]; then
     emacsclient -e '(save-some-buffers t)'
 fi
 
 if [ -z $(pgrep -f "dropbox-dist") ]; then
+    rm .org-bu
     cp -a $HOME/org/ $HOME/.org-bu_$(date +%F)/
-    rm $HOME/.org-bu
     ln -s $HOME/.org-bu_$(date +%F) $HOME/.org-bu
     dropbox start
     sleep 3
@@ -36,14 +29,10 @@ fi
 
 # $HOME/bin/.sync_org-agenda.sh
 if [[ -z "`pgrep -f 'emacsclient'`" ]]; then
-    emacsclient -c --eval '(org-agenda-list)' --eval '(delete-other-windows)' &
+    emacsclient -c --eval '(org-agenda-list)' --eval '(delete-other-windows)'
 else
     echo all done here, org-files are synced
     # $HOME/bin/.sync_org-agenda.sh
 fi
-<<<<<<< HEAD
 
-## bash -c 'sleep 20; killall -w dropbox' &
-=======
-exit 0
->>>>>>> d18217ea321c862095fb79ac71eab13f813b734f
+# bash -c 'sleep 20; killall -w dropbox' &
