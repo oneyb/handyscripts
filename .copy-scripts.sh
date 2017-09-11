@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 dir=$HOME/documents/handyscripts
 
 stuff="
@@ -24,15 +23,16 @@ stuff="
 
 
 if [[ $1 == "out" ]];then
-    cp -a $stuff $dir/
+    cp $stuff $dir/
     echo commit like this:
     echo "  cd $dir;  git commit . -m 'saving things' && git push origin master; cd -"
 fi
 
 if [[ $1 == "in" ]];then
-    cd $dir;  git pull
+	cd $dir
+	git pull
     for s in $stuff; do
-        cp -a $(basename $s) $(dirname $s)
+        cp `basename $s`  $s
     done
     cd -
 fi
