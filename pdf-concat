@@ -2,7 +2,7 @@
 
 #  A handy little program to batch rename pdf files.
 #
-#  Copyright (C) 2016  Brian J. Oney, brian.j.oney|at|gmail.com
+#  Copyleft (C) 2016  Brian J. Oney, brian.j.oney|at|gmail.com
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -19,6 +19,9 @@
 
 import sys
 
+import argparse
+
+
 desc = """
   A handy little program to patch together pdf files.
         Usage:
@@ -32,22 +35,26 @@ if '-h' in sys.argv or '--help' in sys.argv or len(sys.argv) == 1 and __name__ =
     print desc
     sys.exit(0)
 
-import os
+import subprocess
+# import os
 
-def system_string(args):
+def pdftk_string(args):
     """
     prepare string to evaluate
     """
-    command = 'pdftk ' + ' '.join(args[:-1]) + ' cat output ' + args[-1]
+    command = ['pdftk'] + args[:-1] + ['cat', 'output'] + [args[-1]]
     return command
 
 
 # Run if wanted
 if __name__ == '__main__':
     if '-v' in sys.argv:
-        command = system_string(sys.argv[2:])
+        command = pdftk_string(sys.argv[2:])
         print 'Sending the following string to the command line: \n\n\t' + \
-            command + '\n'
-        os.system(command)
+            ' '.join(command) + '\n'
+        # import IPython; IPython.embed()
+        p = subprocess.call(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     else:
-        os.system(system_string(sys.argv[1:]))
+        p = subprocess.call(pdftk_string(sys.argv[1:]),
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE)
