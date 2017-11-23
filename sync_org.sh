@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 if [[ -n "`pgrep -f 'emacs --daemon'`" ]]; then
     emacsclient -e '(save-some-buffers t)'
@@ -12,7 +12,8 @@ if [ -z $(pgrep -f "dropbox-dist") ]; then
     sleep 3
 fi
 
-while [[ "Up to date" != "$(dropbox status)" ]]; do sleep 3; done
+# while [[ "Up to date" != "$(dropbox status)" ]]; do sleep 3; done
+sleep 16
 
 conflicts=$(ls $HOME/org/*conflicted*)
 if [[ -n "$conflicts" ]]; then

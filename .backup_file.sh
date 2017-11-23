@@ -13,7 +13,9 @@ fi
 cd ~
 
 cp -au ~/bin/zoterobib2* ~/zotero/
-rsync -vurt --delete zotero/ /d/literature/zotero/
+rsync -vurt --delete zotero/ $dir/literature/zotero/
+
+rsync -vurtl --delete --size-only /stuff/academic-archive/ $dest/documents/academic-archive/
 
 if [ 2 -eq `date +%w` ]; then
     rsync -vurtl --delete --size-only /stuff/vms/ $dest/vms/
@@ -28,7 +30,7 @@ fi
 # for the cryptex
 if [ -d /media/oney/OneyCryptex/ ]; then
     echo "Everything looks good...";
-    rsync -vurtCl --delete /d/documents/ /media/oney/OneyCryptex/documents/
+    rsync -vurtCl --delete $dir/documents/ /media/oney/OneyCryptex/documents/
     rsync -vurtl --delete ~ /media/oney/OneyCryptex/
     rsync -vurtRCl --delete .thunderbird/ /media/oney/OneyCryptex/
 else echo "mount the partition first...";

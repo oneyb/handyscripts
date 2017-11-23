@@ -36,7 +36,7 @@ sleep 1
 
 if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     # Stuff to sync
-    stuff="jobsearch config pubmaterials marriage training_tourenleiter"
+    stuff="jobsearch config marriage training_tourenleiter"
     for s in $stuff; do
         rsync -vrulDO --size-only --exclude '*bw2-py*' --delete $docs/$s/ $USB/$s/
     done
@@ -67,7 +67,7 @@ if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     rsync -vrulDO --size-only $USB1/ClearScanner_PDF/* $HOME/documents/scans/
 else
     # stuff="eaternity"
-    stuff="jobsearch pubmaterials marriage training_tourenleiter"
+    stuff="jobsearch marriage training_tourenleiter"
     for s in $stuff; do
         rsync -vurt --delete $USB/$s/ $docs/$s/
     done
@@ -88,3 +88,4 @@ adb shell rm -f /sdcard/rsyncd.conf
 adb shell rm -f /data/local/tmp/rsync
 adb kill-server
 echo Phone can now be removed
+adb kill-server
