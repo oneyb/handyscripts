@@ -36,13 +36,13 @@ sleep 1
 
 if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     # Stuff to sync
-    stuff="jobsearch config marriage training_tourenleiter"
+    stuff="config marriage training_tourenleiter"
     for s in $stuff; do
         rsync -vrulDO --size-only --exclude '*bw2-py*' --delete $docs/$s/ $USB/$s/
     done
 
     # Home stuff
-    stuff="action books Breeding dropbox-insekten/Dropbox sia-thesis org org-archive zotero"
+    stuff="action books dropbox-insekten/Dropbox org org-archive zotero rpi-ap-ha"
     for s in $stuff; do
         rsync -vrulDOL --size-only --delete ~/$s/ $USB/$s/
     done
