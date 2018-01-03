@@ -1,7 +1,12 @@
 #!/bin/bash
 
-folders='documents literature'
-folders='documents music pictures literature'
+
+# if [ "23e07b94-b859-4ead-914c-a8f763120cea" == $(sed -r '/^#/d;/\s\/\s/!d;s/^UUID=([a-z0-9-]+) .+$/\1/' /etc/fstab) ]; then
+if [ $HOST == "tinkbox"]; then
+    folders='documents literature'
+else
+    folders='documents music pictures literature'
+fi
 dir=/d
 
 if [ -d /media/oney/stuff/ ]; then
@@ -12,13 +17,13 @@ fi
 
 cd ~
 
-cp -au ~/bin/zoterobib2* ~/zotero/
-rsync -vurt --delete zotero/ $dir/literature/zotero/
 
-rsync -vurtl --delete --size-only /stuff/academic-archive/ $dest/documents/academic-archive/
-
-if [ 2 -eq `date +%w` ]; then
-    rsync -vurtl --delete --size-only /stuff/vms/ $dest/vms/
+if [ $HOST != "tinkbox"]; then
+    rsync -vurt --delete zotero/ $dir/literature/zotero/
+    rsync -vurtl --delete --size-only /stuff/academic-archive/ $dest/documents/academic-archive/
+    if [ 2 -eq `date +%w` ]; then
+        rsync -vurtl --delete --size-only /stuff/vms/ $dest/vms/
+    fi
 fi
 
 if [ -n $dest ]; then
@@ -39,7 +44,6 @@ fi
 if [ -d /media/oney/stuff/ ]; then
     echo "Everything looks good...";
     rsync -vurtl --delete ~ $dest/
-    rsync -vurtRCl --delete .thunderbird/ $dest/
     # for f in ${folders}; do
     #     rsync -vurtl --delete ${dir}/${f}/ ${dest}/${f}/
     # done
