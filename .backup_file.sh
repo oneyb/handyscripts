@@ -2,7 +2,7 @@
 
 
 # if [ "23e07b94-b859-4ead-914c-a8f763120cea" == $(sed -r '/^#/d;/\s\/\s/!d;s/^UUID=([a-z0-9-]+) .+$/\1/' /etc/fstab) ]; then
-if [ $HOST == "tinkbox"]; then
+if [ $HOST == "tinkbox" ]; then
     folders='documents literature'
 else
     folders='documents music pictures literature'
@@ -18,7 +18,7 @@ fi
 cd ~
 
 
-if [ $HOST != "tinkbox"]; then
+if [ $HOST != "tinkbox" ]; then
     rsync -vurt --delete zotero/ $dir/literature/zotero/
     rsync -vurtl --delete --size-only /stuff/academic-archive/ $dest/documents/academic-archive/
     if [ 2 -eq `date +%w` ]; then
