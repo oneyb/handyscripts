@@ -2,90 +2,82 @@
 
 docs=~/documents
 
-adb start-server
-adb wait-for-device
+# adb start-server
+# adb wait-for-device
 
 if [ "`adb devices | sed -r '/ice$/!d;s/^([[:alnum:]]+).*device$/\1/'`" == "4200f424d44d5200" ];
 then
     echo syncing phone
     phone=1
-    USB=rsync://localhost:6010/root/storage/extSdCard
-    USB1=rsync://localhost:6010/root/sdcard
-else
-    echo syncing tablet
+    storage_ext=rsync://localhost:6010/root/storage/extSdCard
+    storage_pho=rsync://localhost:6010/root/sdcard
+elif [ "`adb devices | sed -r '/ice$/!d;s/^([[:alnum:]]+).*device$/\1/'`" == "42008f25d41da4fb" ];
+then
+    echo syncing new phone
     phone=0
-    USB=rsync://localhost:6010/root/storage/2601-20A9
-    USB1=rsync://localhost:6010/root/storage/sdcard
+    storage_ext=/storage/6FAA-E43C
+    storage_pho=/storage/self/primary
 fi
 
-if [[ ! -f ~/phone/rsync.bin ]]; then
-    wget -O ~/phone/rsync.bin http://github.com/pts/rsyncbin/raw/master/rsync.rsync4android
-fi
+# if [[ ! -f ~/phone/rsync.bin ]]; then
+#     wget -O ~/phone/rsync.bin http://github.com/pts/rsyncbin/raw/master/rsync.rsync4android
+# fi
 
-adb push ~/phone/rsync.bin /data/local/tmp/rsync
-adb shell chmod 755 /data/local/tmp/rsync
+# adb push ~/phone/rsync.bin /data/local/tmp/rsync
+# adb shell chmod 755 /data/local/tmp/rsync
 
-adb shell 'exec >/sdcard/rsyncd.conf && echo address = 127.0.0.1 && echo port = 1873 && echo "[root]" && echo path = / && echo use chroot = false && echo read only = false'
-# adb shell '/data/local/tmp/rsync --daemon --config=/sdcard/rsyncd.conf --log-file=/data/local/tmp/foo &'
+# adb shell 'exec >/sdcard/rsyncd.conf && echo address = 127.0.0.1 && echo port = 1873 && echo "[root]" && echo path = / && echo use chroot = false && echo read only = false'
+# # adb shell '/data/local/tmp/rsync --daemon --config=/sdcard/rsyncd.conf --log-file=/data/local/tmp/foo &'
 
-adb shell /data/local/tmp/rsync --daemon --no-detach --config=/sdcard/rsyncd.conf --log-file=/proc/self/fd/2 &
-adb forward tcp:6010 tcp:1873
+# adb shell /data/local/tmp/rsync --daemon --no-detach --config=/sdcard/rsyncd.conf --log-file=/proc/self/fd/2 &
+# adb forward tcp:6010 tcp:1873
 
 echo Syncing...
 sleep 1
-
 if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     # Stuff to sync
-    stuff="config marriage training_tourenleiter"
+    stuff="documents/config documents/marriage documents/training_tourenleiter action books dropbox-insekten/Dropbox org org-archive zotero rpi-ap-ha"
     for s in $stuff; do
-        rsync -vrulDO --size-only --exclude '*bw2-py*' --delete $docs/$s/ $USB/$s/
-    done
-
-    # Home stuff
-    stuff="action books dropbox-insekten/Dropbox org org-archive zotero rpi-ap-ha"
-    for s in $stuff; do
-        rsync -vrulDOL --size-only --delete ~/$s/ $USB/$s/
+        echo adb-sync --delete ~/$s/ $storage/$(basename $s)/
     done
 
     # Musica!
-    if [[ $phone -eq 1 ]]; then
-        rsync -vrulDO --size-only --delete ~/music/essence/ $USB/music/
-    else
-        rsync -vrulDO --size-only --delete ~/music/faves/ $USB/music/faves/
-    fi
+    # if [[ $phone -eq 1 ]]; then
+    adb-sync --delete ~/music/essence/ $storage_ext/music/
+    # else
+    #     rsync -vrulDO --size-only --delete ~/music/faves/ $storage_ext/music/faves/
+    # fi
 
     # Pix
-    rsync -vrulDO --size-only --delete $USB/DCIM/Camera/* $HOME/pictures/phone/
-    rsync -vrulDO --size-only --delete "$USB1/WhatsApp/Media/WhatsApp Images/*jpg" $HOME/pictures/phone/
+    adb-sync -R --delete $storage_ext/DCIM/Camera/* $HOME/pictures/phone/
+    adb-sync -R --delete $storage_pho/WhatsApp/Media/WhatsApp*/*jpg $HOME/pictures/phone/
+    adb-sync $storage_ext/{C,K}o* $HOME/documents/contacts/
     if [[ $phone -eq 1 ]]; then
-        # rsync -vrulDO --size-only $USB1/Contact* $HOME/documents/contacts/
-        # rsync -vrulDO --size-only $USB1/{C,K}o* $HOME/documents/contacts/
-        rsync -vrulDO --size-only $USB/{C,K}o* $HOME/documents/contacts/
+        adb-sync $storage_pho/{C,K}o* $HOME/documents/contacts/
     fi
 
     # Scans
-    rsync -vrulDO --size-only $USB1/ClearScanner_PDF/* $HOME/documents/scans/
+    adb-sync -R --delete $storage_pho/ClearScanner_PDF/* $HOME/documents/scans/
 else
     # stuff="eaternity"
     stuff="jobsearch marriage training_tourenleiter"
     for s in $stuff; do
-        rsync -vurt --delete $USB/$s/ $docs/$s/
+        rsync -vurt --delete $storage_ext/$s/ $docs/$s/
     done
 
     # Action, Books
     # stuff="action books vipassana Breeding dropbox-insekten/Dropbox"
     stuff="action books Breeding sia-thesis sia-manuscript zotero"
     for s in $stuff; do
-        rsync -vurt --delete $USB/$s/ ~/$s/
+        rsync -vurt --delete $storage_ext/$s/ ~/$s/
     done
 
 fi
 
-sleep 6
+# sleep 6
 
-adb forward --remove tcp:6010
-adb shell rm -f /sdcard/rsyncd.conf
-adb shell rm -f /data/local/tmp/rsync
-adb kill-server
+# adb forward --remove tcp:6010
+# adb shell rm -f /sdcard/rsyncd.conf
+# adb shell rm -f /data/local/tmp/rsync
+# adb kill-server
 echo Phone can now be removed
-adb kill-server
