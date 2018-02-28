@@ -36,7 +36,7 @@ echo Syncing...
 sleep 1
 if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     # Stuff to sync
-    stuff="documents/config documents/marriage documents/training_tourenleiter action books dropbox-insekten/Dropbox org org-archive zotero rpi-ap-ha"
+    stuff="documents/config documents/marriage documents/training_tourenleiter action books dropbox-insekten/Dropbox org org-archive zotero rpi-ap-ha Dropbox/wedding-planning"
     for s in $stuff; do
         adb-sync --delete ~/$s/ $storage_ext/$(basename $s)/
     done
