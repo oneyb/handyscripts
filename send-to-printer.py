@@ -23,25 +23,25 @@ parser.add_argument('--options', '-o',
                     help='Options for this printer try running: \
                     lpoptions -p PRINTER -l')
 args, bastards = parser.parse_known_args()
-if args.printer is None:
-    print('Looking for printer')
 
 con = cups.Connection()
-printers = con.getPrinters()
-if printers is None:
-    print('CUPS found no printer.')
-    sys.exit(1)
-else:
-    if len(printers) == 1:
-        args.printer = printers
+if args.printer is None:
+    print('Looking for printer')
+    printers = con.getPrinters()
+    if printers is None:
+        print('CUPS found no printer.')
+        sys.exit(1)
     else:
-        args.printer = printers.pop()
-        del printers
+        if len(printers) == 1:
+            printer = list(printers.keys())[0]
+        else:
+            print("Too many printers, choose from:")
+            print(' '.join(p for p in printers.keys()))
 
-# print(args)
-# print(bastards)
-printer = list(args.printer.keys())[0]
+
 lpoptions = {
+    # see: https://wiki.debian.org/DissectingandDebuggingtheCUPSPrintingSystem
+
     # 'media': 'A4,Lower'
 
     # 'attributes-natural-language': 'de-ch',
