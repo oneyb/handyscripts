@@ -14,6 +14,7 @@ stuff="
     $HOME/bin/rmspace
     $HOME/bin/zoterobib2db.sh
     $HOME/bin/.backup_file.sh
+    $HOME/bin/send-to-printer.py
     $HOME/bin/.switch-wifi.sh
     $HOME/bin/.sync_phone.sh
     $HOME/bin/sync_org.sh

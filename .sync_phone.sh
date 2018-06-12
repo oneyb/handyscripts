@@ -44,6 +44,7 @@ if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     # Musica!
     # if [[ $phone -eq 1 ]]; then
     adb-sync --delete ~/music/essence/ $storage_ext/music/
+    adb-sync --delete ~/music/meditation/s.n.-goenka/ $storage_ext/music/s.n.-goenka/
     # else
     #     rsync -vrulDO --size-only --delete ~/music/faves/ $storage_ext/music/faves/
     # fi

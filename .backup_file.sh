@@ -20,7 +20,7 @@ cd ~
 
 if [ $HOST != "tinkbox" ]; then
     rsync -vurt --delete zotero/ $dir/literature/zotero/
-    rsync -vurtl --delete --size-only /stuff/academic-archive/ $dest/documents/academic-archive/
+    rsync -vurt --delete /stuff/academic-archive/ $dest/documents/academic-archive/
     if [ 2 -eq `date +%w` ]; then
         rsync -vurtl --delete --size-only /stuff/vms/ $dest/vms/
     fi
