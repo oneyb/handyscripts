@@ -5,6 +5,10 @@ if [ "$PWD" == ~ ]; then
     echo "Don't do this in your home directory..."; exit;
 fi
 
+if [ "$PWD" == / ]; then 
+    echo "Don't do this in your root directory..."; exit;
+fi
+
 find . -type d |
     sed -r '/\.svn/d;/\.git/d;/README/d;/^Make.*/d;/LICENSE/d;/.*[A-Z :].*/!d' |
     while read file;
@@ -26,5 +30,5 @@ find . -type d |
 echo now rename files
 
 find . -type f |
-    sed -r '/\.svn/d;/\.git/d;/README/d;/LICENSE/d;/.*[A-Z :].*/!d' |
+    sed -r '/\.pio/d;/\.svn/d;/\.git/d;/README/d;/LICENSE/d;/.*[A-Z :].*/!d' |
     rename -v 's/[A-Z]/\L$&/g;s/ +/-/g;s/:/_/;s/-_-/_/g;s/-+/-/g;s/_-_/-/g'
