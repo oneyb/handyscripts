@@ -17,29 +17,31 @@ from os.path import isfile
 import sys
 import argparse
 
-parser = argparse.ArgumentParser(description='Print stuff with cups')
-parser.add_argument('--printer', '-p',
-                    help='Use this printer, try running: lpstat -a')
-parser.add_argument('--options', '-o', 
-                    help='Options for this printer, try running: \
-                    lpoptions -p PRINTER -l')
-# parser.parse_known_args(['-o', 'sides=one-sided', '-o', 'test=crap'])
-args, bastards = parser.parse_known_args()
 
-# print(dict(args.options))
+def get_lpoptions(options, split='='):
+    splits = options.split('=', 1)
+    return {splits[0]: splits[1]}
 
 
-def format_options(options):
-    if type(options) is str:
-        options = [options]
-    res = {}
-    for o in options:
-        split = o.split('=')
-        res.update({split[0]: split[1]})
+def format_lpoptions(options):
+    res = dict()
+    for x in options:
+        res.update(x)
     return res
 
 
-# print(format_options([args.options, 'ers=res']))
+parser = argparse.ArgumentParser(description='Print stuff with cups')
+parser.add_argument('--printer', '-p',
+                    help='Use this printer, try running: lpstat -a')
+# Thanks to Peter Otten: https://mail.python.org/pipermail/python-list/2018-June/734722.html
+parser.add_argument('--options', '-o', action='append', type=get_lpoptions,
+                    help='Options for this printer, try running: \
+                    lpoptions -p PRINTER -l')
+
+args, bastards = parser.parse_known_args()
+# args = parser.parse_args(['-o', 'sides=one-sided', '-o', 'test=crap'])
+# print(format_options(args.options))
+
 
 con = cups.Connection()
 
@@ -57,7 +59,7 @@ if args.printer is None:
             print(' '.join(p for p in printers.keys()))
 
 
-lpoptions = format_options(args.options)
+lpoptions = format_lpoptions(args.options)
 # see: https://wiki.debian.org/DissectingandDebuggingtheCUPSPrintingSystem
 # 'media': 'A4,Lower'
 # 'attributes-natural-language': 'de-ch',
