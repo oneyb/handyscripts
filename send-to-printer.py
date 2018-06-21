@@ -18,29 +18,26 @@ import sys
 import argparse
 
 
-def get_lpoptions(options, split='='):
-    splits = options.split('=', 1)
-    return {splits[0]: splits[1]}
+def parse_lpoptions(options, split_char='='):
+    return options.split(split_char, 1)
 
 
 def format_lpoptions(options):
-    res = dict()
-    for x in options:
-        res.update(x)
+    res = {x[0]: x[1] for x in options}
     return res
 
 
 parser = argparse.ArgumentParser(description='Print stuff with cups')
 parser.add_argument('--printer', '-p',
                     help='Use this printer, try running: lpstat -a')
-# Thanks to Peter Otten: https://mail.python.org/pipermail/python-list/2018-June/734722.html
-parser.add_argument('--options', '-o', action='append', type=get_lpoptions,
+# Thanks to Peter Otten:
+# https://mail.python.org/pipermail/python-list/2018-June/734722.html
+parser.add_argument('--options', '-o', action='append', type=parse_lpoptions,
                     help='Options for this printer, try running: \
                     lpoptions -p PRINTER -l')
 
 args, bastards = parser.parse_known_args()
 # args = parser.parse_args(['-o', 'sides=one-sided', '-o', 'test=crap'])
-# print(format_options(args.options))
 
 
 con = cups.Connection()
@@ -59,22 +56,8 @@ if args.printer is None:
             print(' '.join(p for p in printers.keys()))
 
 
-lpoptions = format_lpoptions(args.options)
 # see: https://wiki.debian.org/DissectingandDebuggingtheCUPSPrintingSystem
-# 'media': 'A4,Lower'
-# 'attributes-natural-language': 'de-ch',
-# 'job-sheets': 'none,none'
-# ,'media': 'iso_a4_210x297mm'
-# ,'media': 'iso,a4,210x297mm'
-# 'media': 'A4'
-# ,'sides': 'two-sided-long-edge'
-# ,'HPOption_Tray3': 'AutomaticallySelect'
-# ,PaperSource='AutomaticallySelect'
-# ,o='HPPaperSource=AutomaticallySelect'
-# ,'Paper Source': 'Tray2'
-# ,o='HPPaperSource/Paper Source=AutomaticallySelect'
-# ,o='HPPaperSource=Tray2'
-# ,HPPaperSource='Tray2'
+lpoptions = format_lpoptions(args.options)
 
 # print(args)
 # print(bastards)
@@ -93,3 +76,12 @@ for bastard in bastards:
         print('File doesn\'t exist: %s' % bastard)
 
 sys.exit(0)
+
+# implement filter for odd-sized pdf
+# ** TODO algorithm for printer script:
+#    - get lpoptions
+#    - get document characteristics
+#    - check to see if printer configured to print this
+#    - modify document accordingly
+#    - PRINT!
+
