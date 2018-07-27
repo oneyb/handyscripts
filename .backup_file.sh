@@ -18,18 +18,18 @@ fi
 cd ~
 
 
-if [ $HOST != "tinkbox" ]; then
-    rsync -vurt --delete zotero/ $dir/literature/zotero/
-    rsync -vurt --delete /stuff/academic-archive/ $dest/documents/academic-archive/
-    if [ 2 -eq `date +%w` ]; then
-        rsync -vurtl --delete --size-only /stuff/vms/ $dest/vms/
-    fi
-fi
-
 if [ -n $dest ]; then
     for f in ${folders}; do
         rsync -vurtl --delete ${dir}/${f}/ ${dest}/${f}/
     done
+fi
+
+if [ $HOST != "tinkbox" ]; then
+    rsync -vurt --delete zotero/ $dest/zotero/
+    rsync -vurt --delete /stuff/academic-archive/ $dest/academic-archive/
+    if [ 2 -eq `date +%w` ]; then
+        rsync -vurtl --delete --size-only /stuff/vms/ $dest/vms/
+    fi
 fi
 
 # for the cryptex

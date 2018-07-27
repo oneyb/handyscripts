@@ -36,43 +36,42 @@ echo Syncing...
 sleep 1
 if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     # Stuff to sync
-    stuff="documents/config documents/marriage documents/training_tourenleiter action books dropbox-insekten/Dropbox org org-archive zotero rpi-ap-ha Dropbox/wedding-planning"
+    # stuff="documents/config documents/marriage documents/training_tourenleiter action books dropbox-insekten/Dropbox org org-archive zotero rpi-ap-ha Dropbox/wedding-planning"
+    stuff="Sync books github gebastel"
     for s in $stuff; do
-        adb-sync --delete ~/$s/ $storage_ext/$(basename $s)/
+        adb-sync -n --delete ~/$s/ $storage_ext/$(basename $s)/
     done
 
     # Musica!
     # if [[ $phone -eq 1 ]]; then
-    adb-sync --delete ~/music/essence/ $storage_ext/music/
-    adb-sync --delete ~/music/meditation/s.n.-goenka/ $storage_ext/music/s.n.-goenka/
+    adb-sync -n --delete ~/music/essence/ $storage_ext/music/
+    adb-sync -n --delete ~/music/meditation/s.n.-goenka/ $storage_ext/music/s.n.-goenka/
     # else
     #     rsync -vrulDO --size-only --delete ~/music/faves/ $storage_ext/music/faves/
     # fi
 
     # Pix
-    adb-sync -R $storage_ext/DCIM/Camera/ $HOME/pictures/phone/
-    adb-sync -R $storage_pho/WhatsApp/Media/WhatsApp*/ $HOME/pictures/phone/
-    adb-sync $storage_ext/{C,K}o* $HOME/documents/contacts/
+    adb-sync -n -R $storage_ext/DCIM/Camera/ $HOME/pictures/phone/
+    adb-sync -n -R $storage_pho/WhatsApp/Media/WhatsApp*/ $HOME/pictures/phone/
+    adb-sync -n $storage_ext/{C,K}o* $HOME/documents/contacts/
     if [[ $phone -eq 1 ]]; then
-        adb-sync $storage_pho/{C,K}o* $HOME/documents/contacts/
+        adb-sync -n $storage_pho/{C,K}o* $HOME/documents/contacts/
     fi
 
     # Scans
-    adb-sync -R $storage_pho/ClearScanner_PDF/ $HOME/documents/scans/
-else
-    # stuff="eaternity"
-    stuff="jobsearch marriage training_tourenleiter"
-    for s in $stuff; do
-        rsync -vurt --delete $storage_ext/$s/ $docs/$s/
-    done
+# else
+#     # stuff="eaternity"
+#     stuff="jobsearch marriage training_tourenleiter"
+#     for s in $stuff; do
+#         rsync -vurt --delete $storage_ext/$s/ $docs/$s/
+#     done
 
-    # Action, Books
-    # stuff="action books vipassana Breeding dropbox-insekten/Dropbox"
-    stuff="action books Breeding sia-thesis sia-manuscript zotero"
-    for s in $stuff; do
-        rsync -vurt --delete $storage_ext/$s/ ~/$s/
-    done
-
+#     # Action, Books
+#     # stuff="action books vipassana Breeding dropbox-insekten/Dropbox"
+#     stuff="action books Breeding sia-thesis sia-manuscript zotero"
+#     for s in $stuff; do
+#         rsync -vurt --delete $storage_ext/$s/ ~/$s/
+#     done
 fi
 
 # sleep 6
@@ -80,5 +79,6 @@ fi
 # adb forward --remove tcp:6010
 # adb shell rm -f /sdcard/rsyncd.conf
 # adb shell rm -f /data/local/tmp/rsync
-# adb kill-server
+adb kill-server
 echo Phone can now be removed
+
