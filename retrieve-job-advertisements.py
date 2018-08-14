@@ -1,13 +1,24 @@
 #!/usr/bin/env python3
 
 import sys
-from os.path import isfile, isdir, join, expanduser, basename
+from os.path import isfile, isdir, join, expanduser, basename, dirname
 from os import mkdir
 import time
 import re
 from itertools import chain
 # from shutil import copyfile
 import pdb
+
+
+def get_base_website(url):
+    '''Recursive function for base url'''
+    cand = dirname(url)
+    bad_candidates = {'https:', 'http:', 'ftp:'}
+    if cand in bad_candidates:
+        return url
+    else:
+        return get_base_website(cand)
+
 
 import pdfkit
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -21,6 +32,8 @@ template_dir = join(jobdir, '0-application_materials')
 materials_templates = [
          'cover_letter_oney.org',
          'bewerbungsschreiben_oney.org',
+         'oney_cv_de.org',
+         'oney_cv_en.org',
 ]
 
 env = Environment(
@@ -35,8 +48,8 @@ with open(filename, 'r') as f:
 
 
 patterns_all = [
-    '(?:TODO|NEXT|WAIT) +apply to (.+) (http[^ ]+)',
-    '(?:TODO|NEXT|WAIT) bewerb\w+ \w+ (.+) (http[^ ]+)'
+    '(?:TODO|NEXT|WAIT) +apply to +(.+) +(http[^ ]+)',
+    '(?:TODO|NEXT|WAIT) bewerb\w+ +\w+ +(.+) +(http[^ ]+)'
 ]
 
 urls = []
@@ -58,6 +71,7 @@ pattern_safe = re.compile('\W')
 date = time.strftime("%d.%m.%Y")
 
 for title, url in urls:
+    job_title = title.split(',')
     fname = re.sub(pattern_safe, '-', title)
     dirname = join(jobdir, '1-' + fname)
     if not isdir(dirname):
@@ -73,8 +87,11 @@ for title, url in urls:
         destfile = join(dirname, basename(template))
         if not isfile(destfile):
             template = env.get_template(template)
-            rendered = template.render(title=title, date=date)
+            rendered = template.render(title=job_title[0],
+                                       institute=job_title[1],
+                                       url=get_base_website(url),
+                                       date=date)
             with open(destfile, 'w') as f:
-                 f.write(rendered)
+                f.write(rendered)
             # pdb.set_trace()
             # copyfile(template, destfile)

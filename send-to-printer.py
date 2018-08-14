@@ -23,8 +23,11 @@ def parse_lpoptions(options, split_char='='):
 
 
 def format_lpoptions(options):
-    res = {x[0]: x[1] for x in options}
-    return res
+    if options is None:
+        return {}
+    else:
+        res = {x[0]: x[1] for x in options}
+        return res
 
 
 parser = argparse.ArgumentParser(description='Print stuff with cups')
