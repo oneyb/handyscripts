@@ -10,6 +10,8 @@ from itertools import chain
 import pdb
 
 
+
+
 def get_base_website(url):
     '''Recursive function for base url'''
     cand = dirname(url)
@@ -73,10 +75,10 @@ date = time.strftime("%d.%m.%Y")
 for title, url in urls:
     job_title = title.split(',')
     fname = re.sub(pattern_safe, '-', title)
-    dirname = join(jobdir, '1-' + fname)
-    if not isdir(dirname):
-        mkdir(dirname)
-    ffname = join(dirname, fname + '.pdf')
+    dname = join(jobdir, '1-' + fname.lower())
+    if not isdir(dname):
+        mkdir(dname)
+    ffname = join(dname, fname.lower() + '.pdf')
     if not isfile(ffname):
         print('Saving %s to %s' % (url, ffname))
         pdf = pdfkit.from_url(url, ffname)
@@ -84,7 +86,7 @@ for title, url in urls:
         print('This exists already: %s' % ffname)
 
     for template in materials_templates:
-        destfile = join(dirname, basename(template))
+        destfile = join(dname, basename(template))
         if not isfile(destfile):
             template = env.get_template(template)
             rendered = template.render(title=job_title[0],
