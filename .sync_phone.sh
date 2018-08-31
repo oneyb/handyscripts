@@ -27,7 +27,7 @@ if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     # Syncthing stuff
     stman folder list | sed -r '/Folder Path/!d' | awk '{print $3}' | while read d;
     do
-        adb-sync --delete ~/$d/ $storage_ext/$(basename $d)/
+        adb-sync --delete $d $storage_ext/$(basename $d)/
     done
 
     stuff="books github gebastel documents/training_tourenleiter"
@@ -36,11 +36,11 @@ if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     done
 
     if [[ $phone -eq 0 ]]; then
-        adb-sync --delete ~/music/essence/ $storage_ext/music/
+        adb-sync -n --delete ~/music/essence/ $storage_ext/music/
     else
-        adb-sync --delete ~/music/faves/ $storage_ext/music/
+        adb-sync -n --delete ~/music/faves/ $storage_ext/music/
     fi
-    adb-sync --delete ~/music/meditation/s.n.-goenka/ $storage_ext/music/s.n.-goenka/
+    adb-sync -n --delete ~/music/meditation/s.n.-goenka/ $storage_ext/music/s.n.-goenka/
 
     # Pix
     adb-sync -R $storage_ext/DCIM/Camera/ $HOME/pictures/phone/

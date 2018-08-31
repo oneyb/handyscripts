@@ -27,7 +27,8 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 import jinja2 
 
 
-filename = join(expanduser('~'), 'org/personal-development.org')
+# filename = join(expanduser('~'), 'org/personal-development.org')
+filename = join(expanduser('~'), 'org/job-search.org')
 jobdir = join(expanduser('~'), 'documents/jobsearch/')
 template_dir = join(jobdir, '0-application_materials')
 
@@ -43,6 +44,8 @@ env = Environment(
     autoescape=select_autoescape(enabled_extensions=['org']),
     auto_reload=True,
     # autoescape=select_autoescape(enabled_extensions=('org',))
+    # make sure the org file contents containing macros are surrounded by
+    # {% raw %} and {% endraw %} tags
 )
 
 with open(filename, 'r') as f:
@@ -90,7 +93,7 @@ for title, url in urls:
         if not isfile(destfile):
             template = env.get_template(template)
             rendered = template.render(title=job_title[0],
-                                       institute=job_title[1],
+                                       institute=job_title[1:],
                                        url=get_base_website(url),
                                        date=date)
             with open(destfile, 'w') as f:
