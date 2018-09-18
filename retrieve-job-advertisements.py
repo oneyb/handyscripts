@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 
-import sys
+# import sys
 from os.path import isfile, isdir, join, expanduser, basename, dirname
 from os import mkdir
 import time
 import re
 from itertools import chain
 # from shutil import copyfile
-import pdb
-
-
+import pdfkit
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
 def get_base_website(url):
@@ -22,17 +21,12 @@ def get_base_website(url):
         return get_base_website(cand)
 
 
-import pdfkit
-from jinja2 import Environment, FileSystemLoader, select_autoescape
-import jinja2 
-
-
 # filename = join(expanduser('~'), 'org/personal-development.org')
 filename = join(expanduser('~'), 'org/job-search.org')
 jobdir = join(expanduser('~'), 'documents/jobsearch/')
 template_dir = join(jobdir, '0-application_materials')
 
-materials_templates = [
+materials = [
          'cover_letter_oney.org',
          'bewerbungsschreiben_oney.org',
          'oney_cv_de.org',
@@ -78,22 +72,26 @@ date = time.strftime("%d.%m.%Y")
 for title, url in urls:
     job_title = title.split(',')
     fname = re.sub(pattern_safe, '-', title)
+    # print(fname)
     dname = join(jobdir, '1-' + fname.lower())
     if not isdir(dname):
         mkdir(dname)
     ffname = join(dname, fname.lower() + '.pdf')
     if not isfile(ffname):
         print('Saving %s to %s' % (url, ffname))
-        pdf = pdfkit.from_url(url, ffname)
+        try:
+            pdf = pdfkit.from_url(url, ffname)
+        except Exception as e:
+            print(e)
     else:
         print('This exists already: %s' % ffname)
 
-    for template in materials_templates:
+    for template in materials:
         destfile = join(dname, basename(template))
         if not isfile(destfile):
             template = env.get_template(template)
             rendered = template.render(title=job_title[0],
-                                       institute=job_title[1:],
+                                       institute=", ".join(job_title[1:]),
                                        url=get_base_website(url),
                                        date=date)
             with open(destfile, 'w') as f:

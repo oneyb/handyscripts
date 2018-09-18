@@ -5,25 +5,28 @@ if [ $# -ne 1 ]; then
     exit
 fi
 
-setxkbmap us
-aenea_HOME=/stuff/aenea
+# setxkbmap us
 aenea_HOME=~/aenea
 
-if [ $1 == "windows7" ]; then
-    VirtualBox --startvm windows7 2>&1 ~/.vm.log
+if [ $1 == "w7" ]; then
+    if [ -z "`pgrep -f VirtualBox`" ]; then
+        bash -c "VirtualBox --startvm $1 2>&1 ~/.vm.log" &
+    fi
     sleep 12
-    cd $aenea_HOME/aenea3/server/linux_x11/
+    cd $aenea_HOME/aenea/server/linux_x11/
     if [ -z "`pgrep -f server_x11.py`" ]; then
-	      python server_x11.py > $aenea_HOME/.aenea.log 2> $aenea_HOME/.aenea.log &
+	      bash -c "python server_x11.py &> $aenea_HOME/.aenea.log" &
     else
 	      pkill -f server_x11.py
-	      python server_x11.py > $aenea_HOME/.aenea.log 2> $aenea_HOME/.aenea.log &
+	      bash -c "python server_x11.py &> $aenea_HOME/.aenea.log" &
     fi
 fi
 
 if [ $1 == "x" ]; then
-    VirtualBox --startvm x 2>&1 $aenea_HOME/.vm.log
-    cd $aenea_HOME/aenea/
+    if [ -z "`pgrep -f VirtualBox`" ]; then
+        bash -c "VirtualBox --startvm $1 2>&1 ~/.vm.log" &
+    fi
+    cd $aenea_HOME/aenea-old/
     if [ -z "`pgrep -f server_x11.py`" ]; then
 	      python server_x11.py > $aenea_HOME/.aenea.log 2> $aenea_HOME/.aenea.log &
     else
