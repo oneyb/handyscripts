@@ -58,6 +58,8 @@ if args.printer is None:
             print("Too many printers, choose from:")
             print(' '.join(p for p in printers.keys()))
 
+else:
+    printer = args.printer
 
 # see: https://wiki.debian.org/DissectingandDebuggingtheCUPSPrintingSystem
 lpoptions = format_lpoptions(args.options)

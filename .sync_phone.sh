@@ -27,13 +27,6 @@ echo Syncing...
 sleep 1
 if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     # Stuff to sync
-
-    # Syncthing stuff
-    stman folder list | sed -r '/Folder Path/!d' | awk '{print $3}' | while read d;
-    do
-        adb-sync --delete $d $storage_ext/$(basename $d)/
-    done
-
     stuff="books github gebastel documents/training_tourenleiter"
     for s in $stuff; do
         adb-sync --delete ~/$s/ $storage_ext/$(basename $s)/
@@ -52,6 +45,12 @@ if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     adb-sync $storage_ext/{C,K}o* $HOME/documents/contacts/
     adb-sync $storage_pho/{C,K}o* $HOME/documents/contacts/
 
+    # Syncthing stuff
+    stman folder list | sed -r '/Folder Path/!d' | awk '{print $3}' | while read d;
+    do
+        adb-sync --delete $d $storage_ext/$(basename $d)/
+        [[ $? -ne 0 ]] && echo ooops....
+    done
 fi
 
 adb shell touch $storage_ext/test.txt
