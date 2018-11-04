@@ -44,10 +44,13 @@ fi
 # $HOME/bin/.sync_org-agenda.sh
 if [[ -z "`pgrep -f 'emacs'`" ]]; then
     emacs --daemon
-    emacsclient -c --eval '(org-tags-view t "computer")' --eval '(delete-other-windows)'
+    emacsclient -c --eval '(org-tags-view t "computer+TODO=\"NEXT\"")' --eval '(delete-other-windows)'
+    # emacsclient -c --eval '(org-tags-view t "computer")' --eval '(delete-other-windows)'
+    # emacsclient -c --eval '(org-tags-view t "computer")' --eval '(delete-other-windows)'
     # emacsclient -c --eval '(org-agenda-list)' --eval '(delete-other-windows)'
 else
-    emacsclient -c --eval '(org-tags-view t "computer")' --eval '(delete-other-windows)'
+    emacsclient -c --eval '(org-tags-view t "computer+TODO=\"NEXT\"")' --eval '(delete-other-windows)'
+    # emacsclient -c --eval '(org-tags-view t "computer")' --eval '(delete-other-windows)'
 fi
 
 # bash -c 'sleep 20; killall -w dropbox' &
