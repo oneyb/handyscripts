@@ -29,7 +29,7 @@ if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     # Stuff to sync
     stuff="books github gebastel documents/training_tourenleiter"
     for s in $stuff; do
-        adb-sync --delete ~/$s/ $storage_ext/$(basename $s)/
+        adb-sync --force --copy-links --delete ~/$s/ $storage_ext/$(basename $s)/
     done
 
     if [[ $phone -eq 0 ]]; then
@@ -48,7 +48,7 @@ if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     # Syncthing stuff
     stman folder list | sed -r '/Folder Path/!d' | awk '{print $3}' | while read d;
     do
-        adb-sync --delete $d $storage_ext/$(basename $d)/
+        adb-sync --force --copy-links --delete $d $storage_ext/$(basename $d)/
         [[ $? -ne 0 ]] && echo ooops....
     done
 fi

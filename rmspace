@@ -13,10 +13,10 @@ find . -type d |
     sed -r '/\.svn/d;/\.git/d;/README/d;/^Make.*/d;/LICENSE/d;/.*[A-Z :].*/!d' |
     while read file;
     do
-        target=$(echo "$file" | sed -r -e 's/\ +/-/g;s/-+/-/g;s/-\_-/_/g;s/\:/\_/g') ;
+        target=$(echo "$file" | sed -r -e 's/\ +/-/g;s/-+/-/g;s/-?\_-/_/g;s/\:/\_/g') ;
         # echo "Renaming '$file' to '$target'";
         mv "$file" "$target";
-        target2=$(echo "$target" | sed -r -e 's/\ +/-/g;s/-+/-/g;s/-\_-/_/g');
+        target2=$(echo "$target" | sed -r -e 's/\ +/-/g;s/-+/-/g;s/-\_-?/_/g');
         # echo "Renaming '$target' to '$target2'";
         mv "$target" "$target2";
         target=$(echo "$target2" | sed -r -e 's/:/_/g');
