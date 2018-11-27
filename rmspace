@@ -22,7 +22,7 @@ find . -type d |
         target=$(echo "$target2" | sed -r -e 's/:/_/g');
         # echo "Renaming '$target2' to '$target'";
         mv "$target2" "$target";
-        target2=$(echo "$target" | sed -r -e 's/[A-Z]/\L&/g');
+        target2=$(echo "$target" | sed -r -e 's/[A-Z]/\L&/g;s/-?\_-?/_/g');
         echo "Renaming '$file' to '$target2'";
         mv "$target" "$target2";
     done

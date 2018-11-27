@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
 docs=~/documents
-
+$adbsync=/home/oney/bin/adb-sync
 # xmessage -timeout 1  "Files are conflicted"  --display=:0 
 # touch /home/oney/shivermetimbers
 # exit 
@@ -29,26 +29,26 @@ if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     # Stuff to sync
     stuff="books github gebastel documents/training_tourenleiter"
     for s in $stuff; do
-        adb-sync --force --copy-links --delete ~/$s/ $storage_ext/$(basename $s)/
+        $adbsync --force --copy-links --delete ~/$s/ $storage_ext/$(basename $s)/
     done
 
     if [[ $phone -eq 0 ]]; then
-        adb-sync -n --delete ~/music/essence/ $storage_ext/music/essence/
+        $adbsync -n --delete ~/music/essence/ $storage_ext/music/essence/
     else
-        adb-sync -n --delete ~/music/faves/ $storage_ext/music/faves/
+        $adbsync -n --delete ~/music/faves/ $storage_ext/music/faves/
     fi
-    adb-sync -n --delete ~/music/meditation/s.n.-goenka/ $storage_ext/music/s.n.-goenka/
+    $adbsync -n --delete ~/music/meditation/s.n.-goenka/ $storage_ext/music/s.n.-goenka/
 
     # Pix
-    adb-sync -R $storage_ext/DCIM/Camera/ $HOME/pictures/phone/
-    adb-sync -R $storage_pho/WhatsApp/Media/WhatsApp*/ $HOME/pictures/phone/
-    adb-sync $storage_ext/{C,K}o* $HOME/documents/contacts/
-    adb-sync $storage_pho/{C,K}o* $HOME/documents/contacts/
+    $adbsync -R $storage_ext/DCIM/Camera/ $HOME/pictures/phone/
+    $adbsync -R $storage_pho/WhatsApp/Media/WhatsApp*/ $HOME/pictures/phone/
+    $adbsync $storage_ext/{C,K}o* $HOME/documents/contacts/
+    $adbsync $storage_pho/{C,K}o* $HOME/documents/contacts/
 
     # Syncthing stuff
     stman folder list | sed -r '/Folder Path/!d' | awk '{print $3}' | while read d;
     do
-        adb-sync --force --copy-links --delete $d $storage_ext/$(basename $d)/
+        $adbsync --force --copy-links --delete $d $storage_ext/$(basename $d)/
         [[ $? -ne 0 ]] && echo ooops....
     done
 fi

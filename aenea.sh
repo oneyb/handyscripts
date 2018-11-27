@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 if [ $# -ne 1 ]; then
     echo Please give the name of the VM to be used
@@ -9,7 +9,7 @@ fi
 aenea_HOME=~/aenea
 
 if [ $1 == "w7" ]; then
-    if [ -z "`pgrep -f VirtualBox`" ]; then
+    if [ -z "`pgrep -f VirtualBox --startvm`" ]; then
         bash -c "VirtualBox --startvm $1 2>&1 ~/.vm.log" &
     fi
     sleep 12
@@ -23,7 +23,7 @@ if [ $1 == "w7" ]; then
 fi
 
 if [ $1 == "x" ]; then
-    if [ -z "`pgrep -f VirtualBox`" ]; then
+    if [ -z "`pgrep -f VirtualBox --startvm`" ]; then
         bash -c "VirtualBox --startvm $1 2>&1 ~/.vm.log" &
     fi
     cd $aenea_HOME/aenea-old/
