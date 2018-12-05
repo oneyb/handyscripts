@@ -1,7 +1,8 @@
 #!/bin/bash -x
 
 docs=~/documents
-$adbsync=/home/oney/bin/adb-sync
+# adbsync=/home/oney/bin/adb-sync
+adbsync=adb-sync
 # xmessage -timeout 1  "Files are conflicted"  --display=:0 
 # touch /home/oney/shivermetimbers
 # exit 
@@ -29,7 +30,7 @@ if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     # Stuff to sync
     stuff="books github gebastel documents/training_tourenleiter"
     for s in $stuff; do
-        $adbsync --force --copy-links --delete ~/$s/ $storage_ext/$(basename $s)/
+        $adbsync --delete ~/$s/ $storage_ext/$(basename $s)/
     done
 
     if [[ $phone -eq 0 ]]; then
@@ -48,7 +49,7 @@ if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     # Syncthing stuff
     stman folder list | sed -r '/Folder Path/!d' | awk '{print $3}' | while read d;
     do
-        $adbsync --force --copy-links --delete $d $storage_ext/$(basename $d)/
+        $adbsync --delete $d $storage_ext/$(basename $d)/
         [[ $? -ne 0 ]] && echo ooops....
     done
 fi

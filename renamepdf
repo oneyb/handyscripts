@@ -81,7 +81,6 @@ def rename_pdf(filename):
     except KeyError:
         name = None
     if re.match('[0-9]', name) is None:
-        title = name
         name = get_outline_name_pdf(filename)
         # print name
         # sanitize
@@ -95,6 +94,7 @@ def rename_pdf(filename):
         shutil.move(filename, name)
     else:
         print 'Failed to rename ' + filename
+
 
 # Run if wanted
 if __name__ == '__main__':

@@ -10,7 +10,7 @@ if [ "$PWD" == / ]; then
 fi
 
 find . -type d |
-    sed -r '/\.svn/d;/\.git/d;/README/d;/^Make.*/d;/LICENSE/d;/.*[A-Z :].*/!d' |
+    sed -r '/\.svn/d;/.*\/\.git/d;/README/d;/^Make.*/d;/LICENSE/d;/.*[A-Z :].*/!d' |
     while read file;
     do
         target=$(echo "$file" | sed -r -e 's/\ +/-/g;s/-+/-/g;s/-?\_-/_/g;s/\:/\_/g') ;
