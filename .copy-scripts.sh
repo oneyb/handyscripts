@@ -3,8 +3,10 @@ dir=$HOME/documents/handyscripts
 
 stuff="
     $HOME/bin/add_number.py
+    $HOME/bin/add_number.py
     $HOME/bin/add-pdf-page-numbers.sh
     $HOME/bin/aenea.sh
+    $HOME/bin/bookmark_pdf.py
     $HOME/bin/cb
     $HOME/bin/dbi
     $HOME/bin/drm_rm.sh
