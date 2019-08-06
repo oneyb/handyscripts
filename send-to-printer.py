@@ -49,14 +49,17 @@ if args.printer is None:
     print('Looking for printer')
     printers = con.getPrinters()
     if printers is None:
-        raise cups.IPPError('CUPS found no printer.')
+        print('CUPS found no printer.')
+        sys.exit(1)
     else:
         if len(printers) == 1:
             printer = list(printers.keys())[0]
-            print('Taking only printer found: ' + printer)
         else:
-            raise cups.IPPError(r"Too many printers, choose from:\n"
-                                + r'\t\n'.join(p for p in printers.keys()))
+            print("Too many printers, choose from:")
+            print('\t' + '\n\t'.join(p for p in printers.keys()))
+            print("Like this:")
+            print('\n'.join(sys.argv[0] + ' -p ' + p for p in printers.keys()))
+            sys.exit(1)
 
 else:
     printer = args.printer

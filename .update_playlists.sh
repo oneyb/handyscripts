@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dirs=/d
+dirs=$HOME
 # d=Alternative_Rock
 ## Music
 dir=${dirs}/music

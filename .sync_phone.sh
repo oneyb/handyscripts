@@ -54,6 +54,6 @@ if [[ $# -eq 0 ]] | [[ $1 != "in" ]]; then
     done
 fi
 
-adb shell touch $storage_ext/test.txt
+# adb shell touch $storage_ext/test.txt
 adb kill-server
 echo Phone can now be removed 
